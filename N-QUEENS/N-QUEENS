@@ -1,0 +1,23 @@
+class Solution:
+    def solveNQueens(self, n: int) -> List[List[str]]:
+        self.n = n
+        self.result = []
+        self.columns = [False] * n
+        self.diagonals1 = [False] * (2 * n - 1)
+        self.diagonals2 = [False] * (2 * n - 1)
+        self.board = [['.' for _ in range(n)] for _ in range(n)]
+        self.backtrack(0)
+        return self.result
+
+    def backtrack(self, row):
+        if row == self.n:
+            self.result.append([''.join(row) for row in self.board])
+            return
+
+        for col in range(self.n):
+            if not self.columns[col] and not self.diagonals1[row + col] and not self.diagonals2[row - col + self.n - 1]:
+                self.board[row][col] = 'Q'
+                self.columns[col] = self.diagonals1[row + col] = self.diagonals2[row - col + self.n - 1] = True
+                self.backtrack(row + 1)
+                self.board[row][col] = '.'
+                self.columns[col] = self.diagonals1[row + col] = self.diagonals2[row - col + self.n - 1] = False
